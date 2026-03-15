@@ -65,7 +65,7 @@ export default function LeaderboardTable({ entries, type, isLoading, currentUser
                                         <RankBadge rank={rank} />
                                     </td>
                                     <td className="whitespace-nowrap px-3 py-4 text-sm">
-                                        <PlayerCell name={entry.user?.name || entry.name} isMe={isMe} />
+                                        <PlayerCell name={entry.user_name || entry.user?.name || entry.name} isMe={isMe} />
                                     </td>
                                     
                                     {type === 'global' ? (

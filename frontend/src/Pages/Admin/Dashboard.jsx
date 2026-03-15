@@ -23,11 +23,13 @@ export default function AdminDashboard() {
                 // Assuming questions_count is populated
                 const totalQuestions = quizzes.reduce((sum, q) => sum + (q.questions_count || 0), 0);
                 
+                const totalAttempts = quizzes.reduce((sum, q) => sum + (q.attempts_count || 0), 0);
+
                 setStats({
                     totalQuizzes,
                     publishedQuizzes,
                     totalQuestions,
-                    totalAttempts: 'N/A' // Need a different endpoint to get global attempts, or leave static for now if unprovided by API
+                    totalAttempts
                 });
 
                 // Grab 5 most recent

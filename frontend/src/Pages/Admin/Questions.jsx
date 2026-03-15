@@ -24,7 +24,7 @@ export default function AdminQuestions() {
         try {
             // Assumes this endpoint loads related questions inherently based on standard Laravel resource design.
             const res = await axios.get(`/api/admin/quizzes/${quizId}`);
-            const data = res.data.data;
+            const data = res.data.data ?? res.data;
             setQuiz(data);
             setQuestions(data.questions || []);
         } catch (error) {

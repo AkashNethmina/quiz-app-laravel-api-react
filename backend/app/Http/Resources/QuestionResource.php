@@ -12,7 +12,7 @@ class QuestionResource extends JsonResource
         return [
             'id'      => $this->id,
             'quiz_id' => $this->quiz_id,
-            'body'    => $this->body,
+            'question_text' => $this->body,
             'type'    => $this->type,
             'order'   => $this->order,
             'options' => OptionResource::collection($this->whenLoaded('options')),

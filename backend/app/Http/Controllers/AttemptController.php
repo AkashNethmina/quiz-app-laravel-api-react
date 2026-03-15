@@ -7,16 +7,12 @@ use App\Models\Quiz;
 use App\Models\QuizAttempt;
 use App\Models\AttemptAnswer;
 use Illuminate\Http\JsonResponse;
+use App\Http\Resources\QuestionResource;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Cache;
 
 class AttemptController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth:sanctum');
-    }
-
     /**
      * POST /quizzes/{quizId}/start
      */
@@ -63,15 +59,13 @@ class AttemptController extends Controller
      */
     private function returnAttemptDetails(QuizAttempt $attempt, Quiz $quiz, Carbon $expiresAt): JsonResponse
     {
-        $questions = $quiz->questions()->with(['options' => function ($query) {
-            $query->select('id', 'question_id', 'body');
-        }])->get();
+        $questions = $quiz->questions()->with('options')->get();
 
         return response()->json([
             'attempt_id'         => $attempt->id,
             'expires_at'         => $expiresAt->toIso8601String(),
             'time_limit_seconds' => $quiz->time_limit_seconds,
-            'questions'          => $questions,
+            'questions'          => QuestionResource::collection($questions),
         ]);
     }
 

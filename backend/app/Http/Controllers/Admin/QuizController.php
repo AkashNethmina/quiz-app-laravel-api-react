@@ -13,18 +13,13 @@ use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class QuizController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware(['auth:sanctum', 'admin']);
-    }
-
     /**
      * GET /admin/quizzes
      * Return all quizzes with questions_count.
      */
     public function index(): AnonymousResourceCollection
     {
-        $quizzes = Quiz::withCount('questions')->latest()->get();
+        $quizzes = Quiz::withCount(['questions', 'attempts'])->latest()->get();
 
         return QuizResource::collection($quizzes);
     }
@@ -34,7 +29,12 @@ class QuizController extends Controller
      */
     public function store(StoreQuizRequest $request): JsonResponse
     {
-        $quiz = Quiz::create($request->validated());
+        $data = $request->validated();
+        if (isset($data['time_limit'])) {
+            $data['time_limit_seconds'] = $data['time_limit'];
+            unset($data['time_limit']);
+        }
+        $quiz = Quiz::create($data);
 
         return response()->json(new QuizResource($quiz), 201);
     }
@@ -55,7 +55,12 @@ class QuizController extends Controller
     public function update(UpdateQuizRequest $request, int $id): JsonResponse
     {
         $quiz = Quiz::findOrFail($id);
-        $quiz->update($request->validated());
+        $data = $request->validated();
+        if (isset($data['time_limit'])) {
+            $data['time_limit_seconds'] = $data['time_limit'];
+            unset($data['time_limit']);
+        }
+        $quiz->update($data);
 
         return response()->json(new QuizResource($quiz->loadCount('questions')));
     }

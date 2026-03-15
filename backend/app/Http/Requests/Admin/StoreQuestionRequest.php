@@ -16,11 +16,11 @@ class StoreQuestionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'body'               => ['required', 'string'],
+            'question_text'      => ['required', 'string'],
             'type'               => ['required', 'in:mcq,true_false'],
             'order'              => ['integer', 'min:0'],
             'options'            => ['required', 'array', 'min:2'],
-            'options.*.body'     => ['required', 'string'],
+            'options.*.option_text'=> ['required', 'string'],
             'options.*.is_correct' => ['required', 'boolean'],
         ];
     }
@@ -57,7 +57,7 @@ class StoreQuestionRequest extends FormRequest
                     $v->errors()->add('options', 'True/False questions must have exactly 1 correct option.');
                 }
 
-                $bodies = collect($options)->pluck('body')->map(fn ($b) => trim((string) $b))->sort()->values()->all();
+                $bodies = collect($options)->pluck('option_text')->map(fn ($b) => trim((string) $b))->sort()->values()->all();
                 if ($bodies !== ['False', 'True']) {
                     $v->errors()->add('options', "True/False option bodies must be exactly 'True' and 'False'.");
                 }

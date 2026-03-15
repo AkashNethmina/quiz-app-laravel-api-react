@@ -29,7 +29,7 @@ export default function QuizListPage() {
             const res = await axios.post(`/api/quizzes/${id}/start`);
             // Attempt object returned from API
             const attemptData = res.data.data || res.data;
-            const attemptId = attemptData.id;
+            const attemptId = attemptData.attempt_id;
             navigate(`/quizzes/${id}/play`, { state: { attemptId, attemptData } });
         } catch (error) {
             console.error("Failed to start quiz", error);
@@ -61,6 +61,17 @@ export default function QuizListPage() {
         );
     }
 
+    const formatTime = (seconds) => {
+        if (!seconds) return "0 sec";
+
+        if (seconds >= 60) {
+            const minutes = seconds / 60;
+            return `${minutes.toFixed(2)} minutes`;
+        }
+
+        return `${seconds} seconds`;
+    };
+
     return (
         <div className="p-6 max-w-7xl mx-auto">
             <h1 className="text-2xl font-bold text-gray-900 mb-6">Available Quizzes</h1>
@@ -77,13 +88,13 @@ export default function QuizListPage() {
                             <p className="text-sm text-gray-600 line-clamp-2 mb-4 flex-grow">
                                 {quiz.description}
                             </p>
-                            
+
                             <div className="flex items-center gap-2 mb-6">
                                 <span className="bg-gray-100 text-gray-600 text-xs px-2 py-1 rounded-md font-medium flex items-center gap-1">
                                     <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                     </svg>
-                                    {quiz.time_limit} seconds
+                                    {formatTime(quiz.time_limit_seconds)}
                                 </span>
                                 <span className="bg-indigo-50 text-indigo-600 text-xs px-2 py-1 rounded-md font-medium">
                                     {quiz.questions_count ?? 0} questions
