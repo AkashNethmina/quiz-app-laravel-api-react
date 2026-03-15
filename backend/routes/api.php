@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin;
 
 // ── Auth-protected routes ─────────────────────────────────────────────────────
 Route::middleware(['auth:sanctum'])->group(function () {
@@ -13,10 +14,32 @@ Route::middleware(['auth:sanctum'])->group(function () {
         ]));
     });
 
+    // Public quiz & attempt routes
+    Route::get('quizzes', [App\Http\Controllers\QuizController::class, 'index']);
+    Route::post('quizzes/{quizId}/start', [App\Http\Controllers\AttemptController::class, 'start']);
+    Route::post('attempts/{attemptId}/submit', [App\Http\Controllers\AttemptController::class, 'submit']);
+    Route::get('attempts/{attemptId}/result', [App\Http\Controllers\AttemptController::class, 'result']);
+
+    // Leaderboards
+    Route::get('leaderboard', [App\Http\Controllers\LeaderboardController::class, 'index']);
+    Route::get('leaderboard/quiz/{quizId}', [App\Http\Controllers\LeaderboardController::class, 'quiz']);
+    Route::get('leaderboard/me', [App\Http\Controllers\LeaderboardController::class, 'myScores']);
 });
 
 // ── Admin-only routes ─────────────────────────────────────────────────────────
-Route::middleware(['auth:sanctum', 'admin'])->prefix('admin')->group(function () {
-    // Admin routes will be added in Phase 4
+Route::prefix('admin')->middleware(['auth:sanctum', 'admin'])->group(function () {
+
+    // Quiz CRUD + publish toggle
+    Route::get('quizzes',                [Admin\QuizController::class, 'index']);
+    Route::post('quizzes',               [Admin\QuizController::class, 'store']);
+    Route::get('quizzes/{id}',           [Admin\QuizController::class, 'show']);
+    Route::put('quizzes/{id}',           [Admin\QuizController::class, 'update']);
+    Route::delete('quizzes/{id}',        [Admin\QuizController::class, 'destroy']);
+    Route::patch('quizzes/{id}/publish', [Admin\QuizController::class, 'publish']);
+
+    // Question management
+    Route::post('quizzes/{quizId}/questions', [Admin\QuestionController::class, 'store']);
+    Route::put('questions/{id}',              [Admin\QuestionController::class, 'update']);
+    Route::delete('questions/{id}',           [Admin\QuestionController::class, 'destroy']);
 });
 
