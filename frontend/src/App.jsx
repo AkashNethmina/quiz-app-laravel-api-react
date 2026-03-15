@@ -3,15 +3,27 @@ import { AuthProvider } from './context/AuthContext';
 import RequireAuth  from './components/guards/RequireAuth';
 import RequireAdmin from './components/guards/RequireAdmin';
 
+// Layouts
+import AuthLayout from './Layouts/AuthLayout';
+import AppLayout from './Layouts/AppLayout';
+
 // Auth pages
-import LoginPage    from './pages/Auth/Login';
-import RegisterPage from './pages/Auth/Register';
+import LoginPage    from './Pages/Auth/Login';
+import RegisterPage from './Pages/Auth/Register';
 
 // User pages
-import UserDashboard from './pages/User/Dashboard';
+import UserDashboard from './Pages/User/Dashboard';
+import QuizList      from './Pages/User/QuizList';
+import QuizPlayer    from './Pages/User/QuizPlayer';
+import ResultPage    from './Pages/User/Result';
+import LeaderboardPage from './Pages/LeaderboardPage';
+import ProfilePage     from './Pages/ProfilePage';
 
 // Admin pages
 import AdminDashboard from './pages/Admin/Dashboard';
+import AdminQuizList  from './pages/Admin/QuizList';
+import AdminQuizForm  from './pages/Admin/QuizForm';
+import AdminQuestions from './pages/Admin/Questions';
 
 export default function App() {
     return (
@@ -19,20 +31,32 @@ export default function App() {
             <BrowserRouter>
                 <Routes>
                     {/* ── Public routes ─────────────────────────────── */}
-                    <Route path="/login"    element={<LoginPage />} />
-                    <Route path="/register" element={<RegisterPage />} />
+                    <Route element={<AuthLayout />}>
+                        <Route path="/login"    element={<LoginPage />} />
+                        <Route path="/register" element={<RegisterPage />} />
+                    </Route>
 
                     {/* ── Protected routes (auth required) ──────────── */}
                     <Route element={<RequireAuth />}>
-                        <Route path="/dashboard"   element={<UserDashboard />} />
-                        {/* /quizzes and /leaderboard will be added in Phase 4 */}
-                        <Route path="/quizzes"     element={<div className="p-8">Quizzes — coming soon</div>} />
-                        <Route path="/leaderboard" element={<div className="p-8">Leaderboard — coming soon</div>} />
+                        <Route element={<AppLayout />}>
+                            <Route path="/dashboard"   element={<UserDashboard />} />
+                            
+                            <Route path="/quizzes"             element={<QuizList />} />
+                            <Route path="/quizzes/:id/play"    element={<QuizPlayer />} />
+                            <Route path="/attempts/:id/result" element={<ResultPage />} />
+                            
+                            <Route path="/leaderboard" element={<LeaderboardPage />} />
+                            <Route path="/profile"     element={<ProfilePage />} />
 
-                        {/* ── Admin routes (admin role required) ──────── */}
-                        <Route element={<RequireAdmin />}>
-                            <Route path="/admin"           element={<AdminDashboard />} />
-                            <Route path="/admin/*"          element={<AdminDashboard />} />
+                            {/* ── Admin routes (admin role required) ──────── */}
+                            <Route element={<RequireAdmin />}>
+                                <Route path="/admin"                     element={<Navigate to="/admin/dashboard" replace />} />
+                                <Route path="/admin/dashboard"           element={<AdminDashboard />} />
+                                <Route path="/admin/quizzes"             element={<AdminQuizList />} />
+                                <Route path="/admin/quizzes/create"      element={<AdminQuizForm />} />
+                                <Route path="/admin/quizzes/:id/edit"    element={<AdminQuizForm />} />
+                                <Route path="/admin/quizzes/:id/questions" element={<AdminQuestions />} />
+                            </Route>
                         </Route>
                     </Route>
 
