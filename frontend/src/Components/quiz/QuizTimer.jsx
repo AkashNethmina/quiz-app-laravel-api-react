@@ -3,6 +3,12 @@ import { useState, useEffect } from 'react';
 export default function QuizTimer({ expiresAt, onExpire }) {
     const [remaining, setRemaining] = useState(0);
 
+    const onExpireRef = useRef(onExpire);
+
+    useEffect(() => {
+        onExpireRef.current = onExpire;
+    }, [onExpire]);
+
     useEffect(() => {
         if (!expiresAt) return;
 
@@ -14,20 +20,26 @@ export default function QuizTimer({ expiresAt, onExpire }) {
             return diff > 0 ? diff : 0;
         };
 
-        setRemaining(calculateRemaining());
+        let diff = calculateRemaining();
+        setRemaining(diff);
+
+        if (diff <= 0) {
+            onExpireRef.current();
+            return;
+        }
 
         const intervalId = setInterval(() => {
-            const diff = calculateRemaining();
+            diff = calculateRemaining();
             setRemaining(diff);
 
             if (diff <= 0) {
                 clearInterval(intervalId);
-                onExpire();
+                onExpireRef.current();
             }
         }, 1000);
 
         return () => clearInterval(intervalId);
-    }, [expiresAt, onExpire]);
+    }, [expiresAt]);
 
     // Format MM:SS
     const minutes = Math.floor(remaining / 60);

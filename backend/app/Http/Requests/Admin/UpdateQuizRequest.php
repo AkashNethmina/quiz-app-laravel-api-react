@@ -16,7 +16,7 @@ class UpdateQuizRequest extends FormRequest
         return [
             'title'              => ['sometimes', 'required', 'string', 'max:255'],
             'description'        => ['sometimes', 'nullable', 'string'],
-            'time_limit_seconds' => ['sometimes', 'required', 'integer', 'min:10'],
+            'time_limit'         => ['sometimes', 'required', 'integer', 'min:10'],
         ];
     }
 }

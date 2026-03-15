@@ -14,7 +14,7 @@ class SubmitAttemptRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'answers'               => ['required', 'array'],
+            'answers'               => ['present', 'array'],
             'answers.*.question_id' => ['required', 'integer', 'exists:questions,id'],
             'answers.*.option_id'   => ['required', 'integer', 'exists:options,id'],
         ];

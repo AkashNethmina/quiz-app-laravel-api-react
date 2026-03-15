@@ -12,10 +12,6 @@ use Illuminate\Http\JsonResponse;
 
 class QuestionController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware(['auth:sanctum', 'admin']);
-    }
 
     /**
      * POST /admin/quizzes/{quizId}/questions
@@ -25,13 +21,13 @@ class QuestionController extends Controller
         $quiz = Quiz::findOrFail($quizId);
 
         $question = $quiz->questions()->create([
-            'body'  => $request->input('body'),
+            'body'  => $request->input('question_text'),
             'type'  => $request->input('type'),
             'order' => $request->input('order', 0),
         ]);
 
         $optionsData = collect($request->input('options'))->map(fn ($option) => [
-            'body'       => $option['body'],
+            'body'       => $option['option_text'],
             'is_correct' => (bool) $option['is_correct'],
         ])->all();
 
@@ -51,7 +47,7 @@ class QuestionController extends Controller
         $question = Question::findOrFail($id);
 
         $question->update(array_filter([
-            'body'  => $request->input('body'),
+            'body'  => $request->input('question_text'),
             'type'  => $request->input('type'),
             'order' => $request->input('order'),
         ], fn ($v) => $v !== null));
@@ -61,7 +57,7 @@ class QuestionController extends Controller
             $question->options()->delete();
 
             $optionsData = collect($request->input('options'))->map(fn ($option) => [
-                'body'       => $option['body'],
+                'body'       => $option['option_text'],
                 'is_correct' => (bool) $option['is_correct'],
             ])->all();
 

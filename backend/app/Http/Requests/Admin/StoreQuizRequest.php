@@ -16,7 +16,7 @@ class StoreQuizRequest extends FormRequest
         return [
             'title'              => ['required', 'string', 'max:255'],
             'description'        => ['nullable', 'string'],
-            'time_limit_seconds' => ['required', 'integer', 'min:10'],
+            'time_limit'         => ['required', 'integer', 'min:10'],
         ];
     }
 }

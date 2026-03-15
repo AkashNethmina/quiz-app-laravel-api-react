@@ -13,9 +13,10 @@ class QuizResource extends JsonResource
             'id'                  => $this->id,
             'title'               => $this->title,
             'description'         => $this->description,
-            'time_limit_seconds'  => $this->time_limit_seconds,
+            'time_limit'          => $this->time_limit_seconds,
             'is_published'        => $this->is_published,
             'questions_count'     => $this->whenCounted('questions'),
+            'attempts_count'      => $this->whenCounted('attempts'),
             'created_at'          => $this->created_at,
         ];
     }
