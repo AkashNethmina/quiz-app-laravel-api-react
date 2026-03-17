@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import axios from '../../lib/axios';
 import QuizTimer from '../../components/quiz/QuizTimer';
+import PrimaryButton from '../../Components/PrimaryButton';
+import SecondaryButton from '../../Components/SecondaryButton';
 
 export default function QuizPlayer() {
     const location = useLocation();
@@ -89,7 +91,7 @@ export default function QuizPlayer() {
     if (!questions.length) {
         return (
             <div className="flex items-center justify-center min-h-[50vh]">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
             </div>
         );
     }
@@ -116,11 +118,11 @@ export default function QuizPlayer() {
                         disabled={isSubmitting}
                         className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium transition ${
                             currentIndex === idx
-                                ? 'ring-2 ring-indigo-600 ring-offset-2'
+                                ? 'ring-2 ring-primary-600 ring-offset-2'
                                 : ''
                         } ${
                             isAnswered(idx)
-                                ? 'bg-indigo-600 text-white'
+                                ? 'bg-primary-600 text-white'
                                 : 'bg-gray-200 text-gray-600'
                         }`}
                     >
@@ -132,7 +134,7 @@ export default function QuizPlayer() {
             {/* Progress Bar */}
             <div className="w-full bg-gray-200 rounded-full h-2 mb-6">
                 <div
-                    className="bg-indigo-600 h-2 rounded-full transition-all duration-300"
+                    className="bg-primary-600 h-2 rounded-full transition-all duration-300"
                     style={{ width: `${((currentIndex + 1) / questions.length) * 100}%` }}
                 ></div>
             </div>
@@ -141,7 +143,7 @@ export default function QuizPlayer() {
             <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 sm:p-8 mb-6 relative">
                 {isSubmitting && (
                     <div className="absolute inset-0 bg-white/50 flex items-center justify-center z-10 rounded-xl">
-                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div>
+                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600"></div>
                     </div>
                 )}
                 
@@ -164,17 +166,17 @@ export default function QuizPlayer() {
                                     disabled={isSubmitting}
                                     className={`w-full text-left p-4 rounded-xl border-2 transition-all ${
                                         isSelected
-                                            ? 'border-indigo-600 bg-indigo-50'
-                                            : 'border-gray-100 bg-white hover:border-indigo-200 hover:bg-gray-50'
+                                            ? 'border-primary-600 bg-primary-50'
+                                            : 'border-gray-100 bg-white hover:border-primary-200 hover:bg-gray-50'
                                     }`}
                                 >
                                     <div className="flex items-center">
                                         <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center mr-3 ${
-                                            isSelected ? 'border-indigo-600' : 'border-gray-300'
+                                            isSelected ? 'border-primary-600' : 'border-gray-300'
                                         }`}>
-                                            {isSelected && <div className="w-2.5 h-2.5 rounded-full bg-indigo-600"></div>}
+                                            {isSelected && <div className="w-2.5 h-2.5 rounded-full bg-primary-600"></div>}
                                         </div>
-                                        <span className={`text-base font-medium ${isSelected ? 'text-indigo-900' : 'text-gray-700'}`}>
+                                        <span className={`text-base font-medium ${isSelected ? 'text-primary-900' : 'text-gray-700'}`}>
                                             {opt.option_text}
                                         </span>
                                     </div>
@@ -193,8 +195,8 @@ export default function QuizPlayer() {
                                     disabled={isSubmitting}
                                     className={`p-6 rounded-xl border-2 text-lg font-bold transition-all flex flex-col items-center justify-center gap-2 ${
                                         isSelected
-                                            ? 'border-indigo-600 bg-indigo-600 text-white'
-                                            : 'border-gray-200 bg-white text-gray-700 hover:bg-gray-50 hover:border-indigo-200'
+                                            ? 'border-primary-600 bg-primary-600 text-white'
+                                            : 'border-gray-200 bg-white text-gray-700 hover:bg-gray-50 hover:border-primary-200'
                                     }`}
                                 >
                                     {opt.option_text}
@@ -207,21 +209,21 @@ export default function QuizPlayer() {
 
             {/* Navigation */}
             <div className="flex items-center justify-between">
-                <button
+                <SecondaryButton
                     onClick={handlePrev}
                     disabled={currentIndex === 0 || isSubmitting}
-                    className="px-6 py-3 rounded-lg text-sm font-medium border border-gray-200 text-gray-700 hover:bg-gray-50 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="px-6 py-3"
                 >
                     Previous
-                </button>
+                </SecondaryButton>
                 
-                <button
+                <PrimaryButton
                     onClick={handleNext}
                     disabled={isSubmitting}
-                    className="px-6 py-3 rounded-lg text-sm font-medium bg-indigo-600 hover:bg-indigo-700 text-white transition disabled:opacity-50"
+                    className="px-6 py-3"
                 >
                     {currentIndex === questions.length - 1 ? 'Submit Quiz' : 'Next'}
-                </button>
+                </PrimaryButton>
             </div>
         </div>
     );

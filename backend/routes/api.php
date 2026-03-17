@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin;
 
 // ── Auth-protected routes ─────────────────────────────────────────────────────
-Route::middleware(['auth:sanctum'])->group(function () {
+Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
     // Returns the authenticated user including the role field
     Route::get('/user', function (Request $request) {
@@ -27,7 +27,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 });
 
 // ── Admin-only routes ─────────────────────────────────────────────────────────
-Route::prefix('admin')->middleware(['auth:sanctum', 'admin'])->group(function () {
+Route::prefix('admin')->middleware(['auth:sanctum', 'admin', 'verified'])->group(function () {
 
     // Quiz CRUD + publish toggle
     Route::get('quizzes',                [Admin\QuizController::class, 'index']);

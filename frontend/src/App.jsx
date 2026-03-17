@@ -7,9 +7,14 @@ import RequireAdmin from './components/guards/RequireAdmin';
 import AuthLayout from './Layouts/AuthLayout';
 import AppLayout from './Layouts/AppLayout';
 
+import AdminLayout from './Layouts/AdminLayout';
+
 // Auth pages
-import LoginPage    from './Pages/Auth/Login';
-import RegisterPage from './Pages/Auth/Register';
+import LoginPage       from './Pages/Auth/Login';
+import RegisterPage    from './Pages/Auth/Register';
+import ForgotPassword  from './Pages/Auth/ForgotPassword';
+import ResetPassword   from './Pages/Auth/ResetPassword';
+import VerifyEmail     from './Pages/Auth/VerifyEmail';
 
 // User pages
 import UserDashboard from './Pages/User/Dashboard';
@@ -32,12 +37,19 @@ export default function App() {
                 <Routes>
                     {/* ── Public routes ─────────────────────────────── */}
                     <Route element={<AuthLayout />}>
-                        <Route path="/login"    element={<LoginPage />} />
-                        <Route path="/register" element={<RegisterPage />} />
+                        <Route path="/login"          element={<LoginPage />} />
+                        <Route path="/register"       element={<RegisterPage />} />
+                        <Route path="/forgot-password" element={<ForgotPassword />} />
+                        <Route path="/reset-password"  element={<ResetPassword />} />
                     </Route>
 
                     {/* ── Protected routes (auth required) ──────────── */}
                     <Route element={<RequireAuth />}>
+                        {/* Verify email — shown inside auth but outside AppLayout */}
+                        <Route element={<AuthLayout />}>
+                            <Route path="/verify-email" element={<VerifyEmail />} />
+                        </Route>
+
                         <Route element={<AppLayout />}>
                             <Route path="/dashboard"   element={<UserDashboard />} />
                             
@@ -47,9 +59,11 @@ export default function App() {
                             
                             <Route path="/leaderboard" element={<LeaderboardPage />} />
                             <Route path="/profile"     element={<ProfilePage />} />
+                        </Route>
 
-                            {/* ── Admin routes (admin role required) ──────── */}
-                            <Route element={<RequireAdmin />}>
+                        {/* ── Admin routes (admin role required) ──────── */}
+                        <Route element={<RequireAdmin />}>
+                            <Route element={<AdminLayout />}>
                                 <Route path="/admin"                     element={<Navigate to="/admin/dashboard" replace />} />
                                 <Route path="/admin/dashboard"           element={<AdminDashboard />} />
                                 <Route path="/admin/quizzes"             element={<AdminQuizList />} />

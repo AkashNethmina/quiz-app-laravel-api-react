@@ -78,7 +78,7 @@ export default function AdminQuestions() {
     if (loading) {
         return (
             <div className="flex items-center justify-center min-h-[50vh]">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
             </div>
         );
     }
@@ -87,7 +87,7 @@ export default function AdminQuestions() {
         <div className="max-w-5xl mx-auto p-6">
             <div className="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
-                    <Link to="/admin/quizzes" className="text-sm font-medium text-indigo-600 hover:text-indigo-800 mb-2 inline-flex items-center">
+                    <Link to="/admin/quizzes" className="text-sm font-medium text-primary-600 hover:text-primary-800 mb-2 inline-flex items-center">
                         <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
                         </svg>
@@ -112,7 +112,7 @@ export default function AdminQuestions() {
                 {!showAddForm && (
                     <button
                         onClick={() => { setShowAddForm(true); setEditingQuestionId(null); }}
-                        className="bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2.5 rounded-lg text-sm font-medium transition shadow-sm flex items-center justify-center shrink-0"
+                        className="bg-primary-600 hover:bg-primary-700 text-white px-5 py-2.5 rounded-lg text-sm font-medium transition shadow-sm flex items-center justify-center shrink-0"
                     >
                         <svg className="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
@@ -150,12 +150,12 @@ export default function AdminQuestions() {
                                     onCancel={() => setEditingQuestionId(null)}
                                 />
                             ) : (
-                                <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-5 flex gap-4 transition hover:border-indigo-100">
+                                <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-5 flex gap-4 transition hover:border-primary-100">
                                     <div className="flex flex-col items-center gap-1 text-gray-400">
                                         <button 
                                             onClick={() => moveQuestion(index, 'up')}
                                             disabled={index === 0}
-                                            className="p-1 hover:text-indigo-600 disabled:opacity-30 transition"
+                                            className="p-1 hover:text-primary-600 disabled:opacity-30 transition"
                                         >
                                             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 15l7-7 7 7"></path></svg>
                                         </button>
@@ -163,7 +163,7 @@ export default function AdminQuestions() {
                                         <button 
                                             onClick={() => moveQuestion(index, 'down')}
                                             disabled={index === questions.length - 1}
-                                            className="p-1 hover:text-indigo-600 disabled:opacity-30 transition"
+                                            className="p-1 hover:text-primary-600 disabled:opacity-30 transition"
                                         >
                                             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
                                         </button>
@@ -172,7 +172,7 @@ export default function AdminQuestions() {
                                     <div className="flex-1">
                                         <div className="flex justify-between items-start mb-3">
                                             <div>
-                                                <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium mb-2 ${q.type === 'mcq' ? 'bg-indigo-50 text-indigo-700' : 'bg-purple-50 text-purple-700'}`}>
+                                                <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium mb-2 ${q.type === 'mcq' ? 'bg-primary-50 text-primary-700' : 'bg-purple-50 text-purple-700'}`}>
                                                     {q.type === 'mcq' ? 'Multiple Choice' : 'True/False'}
                                                 </span>
                                                 <p className="font-semibold text-gray-900">{q.question_text}</p>
@@ -180,7 +180,7 @@ export default function AdminQuestions() {
                                             <div className="flex gap-2 shrink-0">
                                                 <button
                                                     onClick={() => { setEditingQuestionId(q.id); setShowAddForm(false); }}
-                                                    className="px-3 py-1.5 text-xs font-medium text-indigo-600 bg-indigo-50 hover:bg-indigo-100 rounded-lg transition"
+                                                    className="px-3 py-1.5 text-xs font-medium text-primary-600 bg-primary-50 hover:bg-primary-100 rounded-lg transition"
                                                 >
                                                     Edit
                                                 </button>

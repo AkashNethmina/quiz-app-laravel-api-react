@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 export default function QuizTimer({ expiresAt, onExpire }) {
     const [remaining, setRemaining] = useState(0);

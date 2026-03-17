@@ -1,12 +1,18 @@
 import { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, useSearchParams } from 'react-router-dom';
 import useAuth from '../../hooks/useAuth';
+import TextInput from '../../Components/TextInput';
+import InputLabel from '../../Components/InputLabel';
+import InputError from '../../Components/InputError';
+import PrimaryButton from '../../Components/PrimaryButton';
 
 export default function LoginPage() {
     const { login } = useAuth();
-    const navigate  = useNavigate();
+    const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
+    const passwordReset = searchParams.get('reset') === '1';
 
-    const [form, setForm]     = useState({ email: '', password: '' });
+    const [form, setForm] = useState({ email: '', password: '' });
     const [errors, setErrors] = useState({});
     const [loading, setLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
@@ -36,6 +42,12 @@ export default function LoginPage() {
         <div>
             <h2 className="text-xl font-bold text-gray-900 mb-6 text-center">Sign Into Your Account</h2>
 
+            {passwordReset && (
+                <div className="mb-4 bg-green-50 border border-green-200 text-sm text-green-700 rounded-lg p-3 text-center">
+                    Password reset successfully. Please sign in.
+                </div>
+            )}
+
             {errors.general && (
                 <div className="mb-4 bg-red-50 border border-red-200 text-sm text-red-600 rounded-lg p-3">
                     {errors.general[0]}
@@ -45,10 +57,8 @@ export default function LoginPage() {
             <form onSubmit={handleSubmit} noValidate className="space-y-4">
                 {/* Email */}
                 <div>
-                    <label htmlFor="email" className="block text-xs font-medium text-gray-500 uppercase mb-1">
-                        Email Address
-                    </label>
-                    <input
+                    <InputLabel htmlFor="email" value="Email Address" />
+                    <TextInput
                         id="email"
                         name="email"
                         type="email"
@@ -56,18 +66,16 @@ export default function LoginPage() {
                         value={form.email}
                         onChange={handleChange}
                         required
-                        className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                        className="w-full"
                     />
-                    {errors.email && <p className="mt-1 text-xs text-red-500">{errors.email[0]}</p>}
+                    <InputError message={errors.email?.[0]} className="mt-1" />
                 </div>
 
                 {/* Password */}
                 <div>
-                    <label htmlFor="password" className="block text-xs font-medium text-gray-500 uppercase mb-1">
-                        Password
-                    </label>
+                    <InputLabel htmlFor="password" value="Password" />
                     <div className="relative">
-                        <input
+                        <TextInput
                             id="password"
                             name="password"
                             type={showPassword ? 'text' : 'password'}
@@ -75,7 +83,7 @@ export default function LoginPage() {
                             value={form.password}
                             onChange={handleChange}
                             required
-                            className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 pr-10"
+                            className="w-full pr-10"
                         />
                         <button
                             type="button"
@@ -86,23 +94,28 @@ export default function LoginPage() {
                             <span className="text-xs font-medium">{showPassword ? 'Hide' : 'Show'}</span>
                         </button>
                     </div>
-                    {errors.password && <p className="mt-1 text-xs text-red-500">{errors.password[0]}</p>}
+                    <InputError message={errors.password?.[0]} className="mt-1" />
+                    <div className="mt-1 text-right">
+                        <Link to="/forgot-password" className="text-xs text-primary-600 hover:text-primary-700">
+                            Forgot password?
+                        </Link>
+                    </div>
                 </div>
 
                 <div className="pt-2">
-                    <button
+                    <PrimaryButton
                         type="submit"
                         disabled={loading}
-                        className="w-full bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white px-4 py-2 rounded-lg text-sm font-medium transition"
+                        className="w-full"
                     >
                         {loading ? 'Signing in...' : 'Sign In'}
-                    </button>
+                    </PrimaryButton>
                 </div>
             </form>
 
             <p className="mt-6 text-sm text-center text-gray-600">
                 Don&apos;t have an account?{' '}
-                <Link to="/register" className="text-indigo-600 hover:text-indigo-700 font-medium">
+                <Link to="/register" className="text-primary-600 hover:text-primary-700 font-medium">
                     Register
                 </Link>
             </p>

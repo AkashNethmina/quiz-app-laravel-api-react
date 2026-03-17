@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from '../../lib/axios';
+import PrimaryButton from '../../Components/PrimaryButton';
 
 export default function QuizListPage() {
     const [quizzes, setQuizzes] = useState([]);
@@ -96,18 +97,18 @@ export default function QuizListPage() {
                                     </svg>
                                     {formatTime(quiz.time_limit_seconds)}
                                 </span>
-                                <span className="bg-indigo-50 text-indigo-600 text-xs px-2 py-1 rounded-md font-medium">
+                                <span className="bg-primary-50 text-primary-600 text-xs px-2 py-1 rounded-md font-medium">
                                     {quiz.questions_count ?? 0} questions
                                 </span>
                             </div>
 
-                            <button
+                            <PrimaryButton
                                 onClick={() => handleStartQuiz(quiz.id)}
                                 disabled={startingId === quiz.id}
-                                className="w-full bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white px-4 py-2 rounded-lg text-sm font-medium transition"
+                                className="w-full justify-center"
                             >
                                 {startingId === quiz.id ? 'Starting...' : 'Start Quiz'}
-                            </button>
+                            </PrimaryButton>
                         </div>
                     ))}
                 </div>

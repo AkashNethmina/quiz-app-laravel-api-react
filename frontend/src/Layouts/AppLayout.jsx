@@ -13,7 +13,7 @@ export default function AppLayout() {
     if (isLoading) {
         return (
             <div className="min-h-screen flex items-center justify-center bg-gray-50">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
             </div>
         );
     }
@@ -26,13 +26,13 @@ export default function AppLayout() {
                     <div className="flex justify-between h-16">
                         <div className="flex">
                             <div className="flex-shrink-0 flex items-center">
-                                <span className="text-xl font-bold text-indigo-600">QuizApp</span>
+                                <span className="text-xl font-bold text-primary-600">QuizApp</span>
                             </div>
                         </div>
                         <div className="flex items-center space-x-4">
                             <span className="text-sm text-gray-700 font-medium">{user?.name}</span>
                             {role && (
-                                <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${role === 'admin' ? 'bg-indigo-100 text-indigo-700' : 'bg-green-100 text-green-700'}`}>
+                                <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${role === 'admin' ? 'bg-primary-100 text-primary-700' : 'bg-green-100 text-green-700'}`}>
                                     {role}
                                 </span>
                             )}
@@ -54,7 +54,7 @@ export default function AppLayout() {
                         <NavLink
                             to="/dashboard"
                             className={({ isActive }) =>
-                                `block px-3 py-2 rounded-lg text-sm font-medium ${isActive ? 'bg-indigo-50 text-indigo-700' : 'text-gray-700 hover:bg-gray-50'}`
+                                `block px-3 py-2 rounded-lg text-sm font-medium ${isActive ? 'bg-primary-50 text-primary-700' : 'text-gray-700 hover:bg-gray-50'}`
                             }
                         >
                             Dashboard
@@ -62,7 +62,7 @@ export default function AppLayout() {
                         <NavLink
                             to="/quizzes"
                             className={({ isActive }) =>
-                                `block px-3 py-2 rounded-lg text-sm font-medium ${isActive ? 'bg-indigo-50 text-indigo-700' : 'text-gray-700 hover:bg-gray-50'}`
+                                `block px-3 py-2 rounded-lg text-sm font-medium ${isActive ? 'bg-primary-50 text-primary-700' : 'text-gray-700 hover:bg-gray-50'}`
                             }
                         >
                             Quizzes
@@ -70,7 +70,7 @@ export default function AppLayout() {
                         <NavLink
                             to="/profile"
                             className={({ isActive }) =>
-                                `block px-3 py-2 rounded-lg text-sm font-medium ${isActive ? 'bg-indigo-50 text-indigo-700' : 'text-gray-700 hover:bg-gray-50'}`
+                                `block px-3 py-2 rounded-lg text-sm font-medium ${isActive ? 'bg-primary-50 text-primary-700' : 'text-gray-700 hover:bg-gray-50'}`
                             }
                         >
                             My Profile
@@ -78,26 +78,21 @@ export default function AppLayout() {
                         <NavLink
                             to="/leaderboard"
                             className={({ isActive }) =>
-                                `block px-3 py-2 rounded-lg text-sm font-medium ${isActive ? 'bg-indigo-50 text-indigo-700' : 'text-gray-700 hover:bg-gray-50'}`
+                                `block px-3 py-2 rounded-lg text-sm font-medium ${isActive ? 'bg-primary-50 text-primary-700' : 'text-gray-700 hover:bg-gray-50'}`
                             }
                         >
                             Leaderboard
                         </NavLink>
 
                         {role === 'admin' && (
-                            <div className="pt-4 mt-4 border-t border-gray-200">
-                                <p className="px-3 text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
-                                    Admin
-                                </p>
-                                <NavLink
-                                    to="/admin"
-                                    className={({ isActive }) =>
-                                        `block px-3 py-2 rounded-lg text-sm font-medium ${isActive ? 'bg-indigo-50 text-indigo-700' : 'text-gray-700 hover:bg-gray-50'}`
-                                    }
-                                >
-                                    Admin Panel
-                                </NavLink>
-                            </div>
+                            <NavLink
+                                to="/admin"
+                                className={({ isActive }) =>
+                                    `block px-3 py-2 rounded-lg text-sm font-medium ${isActive ? 'bg-primary-50 text-primary-700' : 'text-gray-700 hover:bg-gray-50'}`
+                                }
+                            >
+                                Admin Panel
+                            </NavLink>
                         )}
                     </nav>
                 </aside>

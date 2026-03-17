@@ -60,7 +60,7 @@ export default function LeaderboardTable({ entries, type, isLoading, currentUser
                             const rank = entry.rank !== undefined ? entry.rank : index + 1;
 
                             return (
-                                <tr key={`${entry.user_id}-${entry.id || index}`} className={isMe ? 'bg-indigo-50' : 'hover:bg-gray-50'}>
+                                <tr key={`${entry.user_id}-${entry.id || index}`} className={isMe ? 'bg-primary-50' : 'hover:bg-gray-50'}>
                                     <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm sm:pl-6">
                                         <RankBadge rank={rank} />
                                     </td>

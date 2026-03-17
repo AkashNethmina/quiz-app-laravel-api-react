@@ -74,7 +74,7 @@ export default function UserDashboard() {
                         <div className="text-sm font-medium text-gray-500 uppercase tracking-wide mb-1">
                             Quizzes Available
                         </div>
-                        <div className="text-3xl font-bold text-indigo-600">
+                        <div className="text-3xl font-bold text-primary-600">
                             {stats.quizzesAvailable}
                         </div>
                     </div>
@@ -104,7 +104,7 @@ export default function UserDashboard() {
             <div>
                 <Link
                     to="/quizzes"
-                    className="inline-flex items-center justify-center bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-lg text-sm font-medium transition"
+                    className="inline-flex items-center justify-center bg-primary-600 hover:bg-primary-700 text-white px-6 py-3 rounded-lg text-sm font-medium transition"
                 >
                     Browse Quizzes
                 </Link>

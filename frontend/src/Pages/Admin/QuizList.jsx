@@ -80,7 +80,7 @@ export default function AdminQuizList() {
                 </div>
                 <button
                     onClick={() => navigate('/admin/quizzes/create')}
-                    className="bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2.5 rounded-lg font-medium transition flex items-center shadow-sm"
+                    className="bg-primary-600 hover:bg-primary-700 text-white px-5 py-2.5 rounded-lg font-medium transition flex items-center shadow-sm"
                 >
                     <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4"></path>
@@ -152,7 +152,7 @@ export default function AdminQuizList() {
                                                     className={`px-3 py-1.5 text-xs font-semibold rounded-lg border transition ${
                                                         quiz.is_published 
                                                         ? 'border-gray-200 text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50' 
-                                                        : 'bg-indigo-50 border-indigo-100 text-indigo-700 hover:bg-indigo-100 disabled:opacity-50'
+                                                        : 'bg-primary-50 border-primary-100 text-primary-700 hover:bg-primary-100 disabled:opacity-50'
                                                     }`}
                                                 >
                                                     {togglingId === quiz.id ? 'Wait...' : quiz.is_published ? 'Unpublish' : 'Publish'}
@@ -160,7 +160,7 @@ export default function AdminQuizList() {
 
                                                 <button
                                                     onClick={() => navigate(`/admin/quizzes/${quiz.id}/edit`)}
-                                                    className="px-3 py-1.5 text-xs font-medium text-indigo-600 bg-indigo-50/50 hover:bg-indigo-50 rounded-lg transition"
+                                                    className="px-3 py-1.5 text-xs font-medium text-primary-600 bg-primary-50/50 hover:bg-primary-50 rounded-lg transition"
                                                 >
                                                     Edit
                                                 </button>
