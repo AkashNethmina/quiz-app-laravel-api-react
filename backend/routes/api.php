@@ -4,15 +4,17 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin;
 
-// ── Auth-protected routes ─────────────────────────────────────────────────────
-Route::middleware(['auth:sanctum', 'verified'])->group(function () {
+// ── /api/user — auth only (no email-verified check) ──────────────────────────
+// Unverified users still need to load their profile (e.g. to show email on the
+// verify-email page). Everything else is gated behind the `verified` middleware.
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+    return response()->json($request->user()->only([
+        'id', 'name', 'email', 'role', 'email_verified_at', 'created_at',
+    ]));
+});
 
-    // Returns the authenticated user including the role field
-    Route::get('/user', function (Request $request) {
-        return response()->json($request->user()->only([
-            'id', 'name', 'email', 'role', 'email_verified_at', 'created_at',
-        ]));
-    });
+// ── Auth-protected routes (email must be verified) ────────────────────────────
+Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
     // Public quiz & attempt routes
     Route::get('quizzes', [App\Http\Controllers\QuizController::class, 'index']);

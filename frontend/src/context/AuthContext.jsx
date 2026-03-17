@@ -4,11 +4,13 @@ import axios from '../lib/axios';
 const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
-    const [user, setUser]                   = useState(null);
+    const [user, setUser]                       = useState(null);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
-    const [isLoading, setIsLoading]         = useState(true);
+    const [isLoading, setIsLoading]             = useState(true);
 
     // ── Rehydrate session on mount ────────────────────────────────────────────
+    // GET /api/user is auth-only (no `verified` middleware), so this works for
+    // both verified and unverified users.
     useEffect(() => {
         (async () => {
             try {
@@ -37,6 +39,8 @@ export function AuthProvider({ children }) {
     }, []);
 
     // ── Register ──────────────────────────────────────────────────────────────
+    // After registration the user is authenticated but not yet verified.
+    // GET /api/user no longer requires verified email, so this always succeeds.
     const register = useCallback(async (name, email, password, password_confirmation) => {
         await axios.get('/sanctum/csrf-cookie');
         const { data } = await axios.post('/register', {
@@ -62,6 +66,8 @@ export function AuthProvider({ children }) {
         user,
         isAuthenticated,
         isLoading,
+        // true only when the user is logged in AND has verified their email
+        emailVerified: !!user?.email_verified_at,
         role: user?.role ?? null,
         login,
         register,
