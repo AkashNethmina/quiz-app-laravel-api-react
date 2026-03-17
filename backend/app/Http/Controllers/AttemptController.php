@@ -84,7 +84,7 @@ class AttemptController extends Controller
         $now = now();
         $quiz = $attempt->quiz;
         $expiresAt = $attempt->started_at->clone()->addSeconds($quiz->time_limit_seconds);
-        
+
         // If they are late, we mark timed_out but stringently we still process their submission
         $timedOut = $now->greaterThan($expiresAt);
 
@@ -101,7 +101,7 @@ class AttemptController extends Controller
 
             if ($userAnswer) {
                 $selectedOptionId = $userAnswer['option_id'];
-                
+
                 // Save the answer
                 AttemptAnswer::create([
                     'attempt_id'         => $attempt->id,
@@ -160,7 +160,7 @@ class AttemptController extends Controller
         $questions = $attempt->quiz->questions;
         $userAnswers = $attempt->attemptAnswers->keyBy('question_id');
 
-        $breakdown = $questions->map(function ($question) use ($userAnswers) {
+        $answers = $questions->map(function ($question) use ($userAnswers) {
             $userAnswer = $userAnswers->get($question->id);
             $correctOption = $question->options->firstWhere('is_correct', true);
 
@@ -173,14 +173,23 @@ class AttemptController extends Controller
             }
 
             return [
+                'id'                    => $userAnswer?->id,
                 'question_id'           => $question->id,
-                'question_body'         => $question->body,
-                'type'                  => $question->type,
-                'selected_option_id'    => $selectedOption ? $selectedOption->id : null,
-                'selected_option_body'  => $selectedOption ? $selectedOption->body : null,
                 'is_correct'            => $isCorrect,
-                'correct_option_id'     => $correctOption ? $correctOption->id : null,
-                'correct_option_body'   => $correctOption ? $correctOption->body : null,
+                'selected_option_id'    => $selectedOption ? $selectedOption->id : null,
+                'question'              => [
+                    'question_text'     => $question->body,
+                    'type'              => $question->type,
+                    'options'           => $question->options->map(fn($opt) => [
+                        'id'            => $opt->id,
+                        'option_text'   => $opt->body,
+                        'is_correct'    => $opt->is_correct,
+                    ])->toArray(),
+                ],
+                'selected_option'       => $selectedOption ? [
+                    'id'                => $selectedOption->id,
+                    'option_text'       => $selectedOption->body,
+                ] : null,
             ];
         });
 
@@ -188,7 +197,7 @@ class AttemptController extends Controller
             'score'        => $attempt->score,
             'timed_out'    => $attempt->timed_out,
             'submitted_at' => $attempt->submitted_at->toIso8601String(),
-            'breakdown'    => $breakdown,
+            'answers'      => $answers,
         ]);
     }
 }

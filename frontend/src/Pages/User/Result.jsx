@@ -25,7 +25,7 @@ export default function ResultPage() {
     if (loading) {
         return (
             <div className="flex items-center justify-center min-h-[50vh]">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
             </div>
         );
     }
@@ -152,7 +152,7 @@ export default function ResultPage() {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link
                     to="/quizzes"
-                    className="inline-flex justify-center items-center px-6 py-3 border border-transparent text-base font-medium rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 shadow-sm transition"
+                    className="inline-flex justify-center items-center px-6 py-3 border border-transparent text-base font-medium rounded-lg text-white bg-primary-600 hover:bg-primary-700 shadow-sm transition"
                 >
                     Play Again
                 </Link>

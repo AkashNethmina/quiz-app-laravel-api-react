@@ -52,7 +52,7 @@ export default function AdminDashboard() {
                 <h1 className="text-2xl font-bold text-gray-900">Admin Dashboard</h1>
                 <Link
                     to="/admin/quizzes/create"
-                    className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition"
+                    className="bg-primary-600 hover:bg-primary-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition"
                 >
                     Create Quiz
                 </Link>
@@ -74,7 +74,7 @@ export default function AdminDashboard() {
             <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
                 <div className="px-6 py-4 border-b border-gray-100 bg-gray-50 flex justify-between items-center">
                     <h2 className="text-lg font-semibold text-gray-800">Recent Quizzes</h2>
-                    <Link to="/admin/quizzes" className="text-sm font-medium text-indigo-600 hover:text-indigo-800">
+                    <Link to="/admin/quizzes" className="text-sm font-medium text-primary-600 hover:text-primary-800">
                         View All
                     </Link>
                 </div>
@@ -125,7 +125,7 @@ export default function AdminDashboard() {
                                             <div className="flex justify-end gap-3">
                                                 <Link 
                                                     to={`/admin/quizzes/${quiz.id}/edit`}
-                                                    className="text-indigo-600 hover:text-indigo-900 text-sm font-medium"
+                                                    className="text-primary-600 hover:text-primary-900 text-sm font-medium"
                                                 >
                                                     Edit
                                                 </Link>
@@ -148,7 +148,7 @@ export default function AdminDashboard() {
     );
 }
 
-function StatCard({ title, value, color = "text-indigo-600" }) {
+function StatCard({ title, value, color = "text-primary-600" }) {
     return (
         <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 flex flex-col justify-center">
             <div className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">

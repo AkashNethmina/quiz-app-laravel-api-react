@@ -88,7 +88,7 @@ export default function LeaderboardPage() {
                 <div className="mt-4 sm:mt-0">
                     <Link
                         to="/quizzes"
-                        className="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto"
+                        className="inline-flex items-center justify-center rounded-md border border-transparent bg-primary-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 sm:w-auto"
                     >
                         Browse Quizzes
                     </Link>
@@ -102,7 +102,7 @@ export default function LeaderboardPage() {
                         onClick={() => setActiveTab('global')}
                         className={`whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm ${
                             activeTab === 'global'
-                                ? 'border-indigo-500 text-indigo-600 font-semibold'
+                                ? 'border-primary-500 text-primary-600 font-semibold'
                                 : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
                         }`}
                     >
@@ -112,7 +112,7 @@ export default function LeaderboardPage() {
                         onClick={() => setActiveTab('quiz')}
                         className={`whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm ${
                             activeTab === 'quiz'
-                                ? 'border-indigo-500 text-indigo-600 font-semibold'
+                                ? 'border-primary-500 text-primary-600 font-semibold'
                                 : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
                         }`}
                     >
@@ -194,7 +194,7 @@ export default function LeaderboardPage() {
                         <select
                             id="quiz"
                             name="quiz"
-                            className="mt-1 block w-full rounded-md border-gray-300 py-2 pl-3 pr-10 text-base focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                            className="mt-1 block w-full rounded-md border-gray-300 py-2 pl-3 pr-10 text-base focus:border-primary-500 focus:outline-none focus:ring-primary-500 sm:text-sm"
                             value={selectedQuizId}
                             onChange={(e) => setSelectedQuizId(e.target.value)}
                         >

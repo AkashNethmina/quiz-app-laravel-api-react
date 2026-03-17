@@ -72,7 +72,7 @@ export default function AdminQuizForm() {
     if (isLoadingInit) {
         return (
             <div className="flex items-center justify-center min-h-[50vh]">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
             </div>
         );
     }
@@ -80,7 +80,7 @@ export default function AdminQuizForm() {
     return (
         <div className="max-w-3xl mx-auto p-6">
             <div className="mb-8">
-                <Link to="/admin/quizzes" className="text-sm font-medium text-indigo-600 hover:text-indigo-800 mb-4 inline-flex items-center">
+                <Link to="/admin/quizzes" className="text-sm font-medium text-primary-600 hover:text-primary-800 mb-4 inline-flex items-center">
                     <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
                     </svg>
@@ -113,7 +113,7 @@ export default function AdminQuizForm() {
                             onChange={handleChange}
                             required
                             placeholder="e.g. Advanced JavaScript Concepts"
-                            className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                            className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
                         />
                         {errors.title && <p className="mt-1 text-xs text-red-500">{errors.title[0]}</p>}
                     </div>
@@ -130,7 +130,7 @@ export default function AdminQuizForm() {
                             onChange={handleChange}
                             rows="4"
                             placeholder="Briefly describe what this quiz is about..."
-                            className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                            className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
                         />
                         {errors.description && <p className="mt-1 text-xs text-red-500">{errors.description[0]}</p>}
                     </div>
@@ -148,7 +148,7 @@ export default function AdminQuizForm() {
                             value={form.time_limit}
                             onChange={handleChange}
                             required
-                            className="w-full sm:w-1/3 border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                            className="w-full sm:w-1/3 border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
                         />
                         {errors.time_limit && <p className="mt-1 text-xs text-red-500">{errors.time_limit[0]}</p>}
                         <p className="mt-2 text-xs text-gray-500">Minimum time limit is 10 seconds.</p>
@@ -164,7 +164,7 @@ export default function AdminQuizForm() {
                         <button
                             type="submit"
                             disabled={isSubmitting}
-                            className="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white rounded-lg text-sm font-medium transition shadow-sm"
+                            className="px-6 py-2.5 bg-primary-600 hover:bg-primary-700 disabled:opacity-50 text-white rounded-lg text-sm font-medium transition shadow-sm"
                         >
                             {isSubmitting ? 'Saving...' : 'Save Quiz'}
                         </button>

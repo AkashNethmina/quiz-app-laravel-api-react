@@ -15,7 +15,7 @@ export default function EmptyState({ message, actionLabel, onAction }) {
             {actionLabel && onAction && (
                 <button
                     onClick={onAction}
-                    className="inline-flex items-center justify-center bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition shadow-sm"
+                    className="inline-flex items-center justify-center bg-primary-600 hover:bg-primary-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition shadow-sm"
                 >
                     {actionLabel}
                 </button>

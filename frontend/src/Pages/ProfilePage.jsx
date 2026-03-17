@@ -67,7 +67,7 @@ export default function ProfilePage() {
                 <div className="bg-white overflow-hidden shadow rounded-lg">
                     <div className="px-4 py-5 sm:p-6">
                         <dt className="text-sm font-medium text-gray-500 truncate">Average Score</dt>
-                        <dd className="mt-1 text-3xl font-semibold text-indigo-600">
+                        <dd className="mt-1 text-3xl font-semibold text-primary-600">
                             {Number(stats.average_score).toFixed(1)}
                         </dd>
                     </div>
