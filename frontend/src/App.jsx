@@ -1,8 +1,8 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
-import RequireAuth     from './components/guards/RequireAuth';
+import RequireAuth     from './Components/guards/RequireAuth';
 import RequireVerified from './Components/guards/RequireVerified';
-import RequireAdmin    from './components/guards/RequireAdmin';
+import RequireAdmin    from './Components/guards/RequireAdmin';
 
 // Layouts
 import AuthLayout  from './Layouts/AuthLayout';
@@ -25,10 +25,10 @@ import LeaderboardPage from './Pages/LeaderboardPage';
 import ProfilePage    from './Pages/ProfilePage';
 
 // Admin pages
-import AdminDashboard from './pages/Admin/Dashboard';
-import AdminQuizList  from './pages/Admin/QuizList';
-import AdminQuizForm  from './pages/Admin/QuizForm';
-import AdminQuestions from './pages/Admin/Questions';
+import AdminDashboard from './Pages/Admin/Dashboard';
+import AdminQuizList  from './Pages/Admin/QuizList';
+import AdminQuizForm  from './Pages/Admin/QuizForm';
+import AdminQuestions from './Pages/Admin/Questions';
 
 export default function App() {
     return (
