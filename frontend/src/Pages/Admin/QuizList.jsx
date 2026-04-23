@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from '../../lib/axios';
-import LoadingSkeleton from '../../components/ui/LoadingSkeleton';
-import EmptyState from '../../components/ui/EmptyState';
-import ConfirmDialog from '../../components/ui/ConfirmDialog';
+import LoadingSkeleton from '../../Components/ui/LoadingSkeleton';
+import EmptyState from '../../Components/ui/EmptyState';
+import ConfirmDialog from '../../Components/ui/ConfirmDialog';
 
 export default function AdminQuizList() {
     const [quizzes, setQuizzes] = useState([]);

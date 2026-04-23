@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import axios from '../../lib/axios';
-import QuizTimer from '../../components/quiz/QuizTimer';
+import QuizTimer from '../../Components/quiz/QuizTimer';
 import PrimaryButton from '../../Components/PrimaryButton';
 import SecondaryButton from '../../Components/SecondaryButton';
 

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import axios from '../lib/axios';
 import useAuth from '../hooks/useAuth';
-import LeaderboardTable from '../components/leaderboard/LeaderboardTable';
+import LeaderboardTable from '../Components/leaderboard/LeaderboardTable';
 
 export default function LeaderboardPage() {
     const { user } = useAuth();

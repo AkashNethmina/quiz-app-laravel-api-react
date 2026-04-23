@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import axios from '../../lib/axios';
-import QuestionForm from '../../components/admin/QuestionForm';
-import ConfirmDialog from '../../components/ui/ConfirmDialog';
-import EmptyState from '../../components/ui/EmptyState';
+import QuestionForm from '../../Components/admin/QuestionForm';
+import ConfirmDialog from '../../Components/ui/ConfirmDialog';
+import EmptyState from '../../Components/ui/EmptyState';
 
 export default function AdminQuestions() {
     const { id: quizId } = useParams();

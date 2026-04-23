@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from '../../lib/axios';
-import LoadingSkeleton from '../../components/ui/LoadingSkeleton';
-import EmptyState from '../../components/ui/EmptyState';
+import LoadingSkeleton from '../../Components/ui/LoadingSkeleton';
+import EmptyState from '../../Components/ui/EmptyState';
 
 export default function AdminDashboard() {
     const [stats, setStats] = useState(null);
