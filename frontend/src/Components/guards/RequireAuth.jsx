@@ -10,8 +10,8 @@ export default function RequireAuth() {
 
     if (isLoading) {
         return (
-            <div className="flex items-center justify-center min-h-screen bg-linen">
-                <div className="w-10 h-10 border-4 border-[#00eb5b] border-t-transparent rounded-full animate-spin" />
+            <div className="flex items-center justify-center min-h-screen">
+                <div className="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin" />
             </div>
         );
     }

@@ -4,7 +4,6 @@ import useAuth from '../../hooks/useAuth';
 import axios from '../../lib/axios';
 import PrimaryButton from '../../Components/PrimaryButton';
 import SecondaryButton from '../../Components/SecondaryButton';
-import { Mail, CheckCircle2, AlertCircle, Loader } from 'lucide-react';
 
 export default function VerifyEmail() {
     const { user, logout }  = useAuth();
@@ -29,7 +28,7 @@ export default function VerifyEmail() {
                 
                 // Fetch user data again to update the email_verified_at field in AuthContext
                 try {
-                    await axios.get('/api/user');
+                    const { data } = await axios.get('/api/user');
                     // We don't have a direct setter in AuthContext, but page reload will pick it up
                     // For a smoother UX, we just redirect to dashboard and let RequireVerified or App root reload it.
                 } catch (e) {
@@ -81,53 +80,39 @@ export default function VerifyEmail() {
     };
 
     return (
-        <div className="space-y-6 text-center">
-            {/* Verification Icon Header */}
-            <div className="w-16 h-16 bg-primary-50 rounded-2xl flex items-center justify-center mx-auto text-primary-600 animate-pulse">
-                {loading ? (
-                    <Loader className="w-7 h-7 animate-spin" />
-                ) : (
-                    <Mail className="w-7 h-7" />
-                )}
-            </div>
+        <div>
+            <h2 className="text-xl font-bold text-gray-900 mb-2 text-center">Verify Your Email</h2>
 
-            <div>
-                <h2 className="text-xl font-bold text-gray-900">Verify Your Email</h2>
-                <p className="text-sm text-gray-500 font-medium mt-2 leading-relaxed">
-                    Thanks for signing up! Before getting started, please verify your email address by clicking
-                    the link we just emailed to you.
-                    {user?.email && (
-                        <span className="block mt-1 font-bold text-gray-800">{user.email}</span>
-                    )}
-                </p>
-            </div>
+            <p className="text-sm text-gray-500 text-center mb-6">
+                Thanks for signing up! Before getting started, please verify your email address by clicking
+                the link we just emailed to you.
+                {user?.email && (
+                    <span className="block mt-1 font-medium text-gray-700">{user.email}</span>
+                )}
+            </p>
 
             {/* Success */}
             {status && (
-                <div className="bg-emerald-50 border border-emerald-100 text-sm font-semibold text-emerald-800 rounded-xl p-4 flex flex-col items-center gap-1.5 justify-center">
-                    <div className="flex items-center gap-1.5">
-                        <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0" />
-                        <span>{status}</span>
-                    </div>
+                <div className="mb-4 bg-green-50 border border-green-200 text-sm text-green-700 rounded-lg p-3 text-center">
+                    {status}
                     {justVerified && (
-                        <span className="text-xs text-emerald-600 animate-pulse">Redirecting to dashboard…</span>
+                        <span className="block mt-1 text-green-500">Redirecting to dashboard…</span>
                     )}
                 </div>
             )}
 
             {/* Error */}
             {errors.general && (
-                <div className="bg-rose-50 border border-rose-100 text-sm font-semibold text-rose-800 rounded-xl p-4 flex items-start gap-2 text-left">
-                    <AlertCircle className="w-5 h-5 text-rose-600 shrink-0 mt-0.5" />
-                    <span>{errors.general[0]}</span>
+                <div className="mb-4 bg-red-50 border border-red-200 text-sm text-red-600 rounded-lg p-3">
+                    {errors.general[0]}
                 </div>
             )}
 
-            <div className="space-y-3 pt-2">
+            <div className="space-y-3">
                 {justVerified ? (
                     <PrimaryButton
                         onClick={() => navigate('/dashboard')}
-                        className="w-full justify-center py-3"
+                        className="w-full justify-center"
                     >
                         Go to Dashboard
                     </PrimaryButton>
@@ -135,16 +120,15 @@ export default function VerifyEmail() {
                     <PrimaryButton
                         onClick={handleResend}
                         disabled={loading}
-                        className="w-full justify-center py-3"
+                        className="w-full justify-center"
                     >
-                        {loading ? 'Sending link...' : 'Resend Verification Email'}
+                        {loading ? 'Sending...' : 'Resend Verification Email'}
                     </PrimaryButton>
                 )}
 
                 <SecondaryButton
                     onClick={handleLogout}
-                    disabled={loading}
-                    className="w-full justify-center py-3"
+                    className="w-full justify-center text-center"
                 >
                     Sign Out
                 </SecondaryButton>
