@@ -5,7 +5,7 @@ import TextInput from '../../Components/TextInput';
 import InputLabel from '../../Components/InputLabel';
 import InputError from '../../Components/InputError';
 import PrimaryButton from '../../Components/PrimaryButton';
-
+import { User, Mail, Lock, Eye, EyeOff, AlertCircle } from 'lucide-react';
 
 function Field({
     id,
@@ -17,7 +17,8 @@ function Field({
     onChange,
     error,
     show,
-    setShow
+    setShow,
+    icon: IconComponent
 }) {
     const inputType = isPassword ? (show ? 'text' : 'password') : type;
 
@@ -25,6 +26,11 @@ function Field({
         <div>
             <InputLabel htmlFor={id} value={label} />
             <div className="relative">
+                {IconComponent && (
+                    <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400">
+                        <IconComponent className="w-4.5 h-4.5" />
+                    </div>
+                )}
                 <TextInput
                     id={id}
                     name={id}
@@ -33,15 +39,20 @@ function Field({
                     value={value}
                     onChange={onChange}
                     required
-                    className={`w-full ${isPassword ? 'pr-10' : ''}`}
+                    placeholder={
+                        id === 'name' ? 'Jane Doe' : 
+                        id === 'email' ? 'jane@example.com' : 
+                        '••••••••'
+                    }
+                    className={`w-full ${IconComponent ? 'pl-10' : ''} ${isPassword ? 'pr-10' : ''}`}
                 />
                 {isPassword && (
                     <button
                         type="button"
                         onClick={() => setShow(!show)}
-                        className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600"
+                        className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-gray-400 hover:text-gray-600 focus:outline-none"
                     >
-                        <span className="text-xs font-medium">{show ? 'Hide' : 'Show'}</span>
+                        {show ? <EyeOff className="w-4.5 h-4.5" /> : <Eye className="w-4.5 h-4.5" />}
                     </button>
                 )}
             </div>
@@ -100,14 +111,15 @@ export default function RegisterPage() {
     };
 
     return (
-        <div>
-            <h2 className="text-xl font-bold text-gray-900 mb-6 text-center">
-                Create an Account
-            </h2>
+        <div className="space-y-6">
+            <div className="text-center">
+                <h2 className="text-xl font-bold text-gray-900">Create an Account</h2>
+            </div>
 
             {errors.general && (
-                <div className="mb-4 bg-red-50 border border-red-200 text-sm text-red-600 rounded-lg p-3">
-                    {errors.general[0]}
+                <div className="bg-rose-50 border border-rose-100 text-sm font-semibold text-rose-800 rounded-xl p-4 flex items-start gap-2">
+                    <AlertCircle className="w-5 h-5 text-rose-600 shrink-0 mt-0.5" />
+                    <span>{errors.general[0]}</span>
                 </div>
             )}
 
@@ -119,6 +131,7 @@ export default function RegisterPage() {
                     value={form.name}
                     onChange={handleChange}
                     error={errors.name?.[0]}
+                    icon={User}
                 />
 
                 <Field
@@ -129,6 +142,7 @@ export default function RegisterPage() {
                     value={form.email}
                     onChange={handleChange}
                     error={errors.email?.[0]}
+                    icon={Mail}
                 />
 
                 <Field
@@ -141,6 +155,7 @@ export default function RegisterPage() {
                     error={errors.password?.[0]}
                     show={showPassword}
                     setShow={setShowPassword}
+                    icon={Lock}
                 />
 
                 <Field
@@ -153,20 +168,21 @@ export default function RegisterPage() {
                     error={errors.password_confirmation?.[0]}
                     show={showConfirmPassword}
                     setShow={setShowConfirmPassword}
+                    icon={Lock}
                 />
 
                 <div className="pt-2">
-                    <PrimaryButton type="submit" disabled={loading} className="w-full">
+                    <PrimaryButton type="submit" disabled={loading} className="w-full py-3">
                         {loading ? 'Creating account...' : 'Create Account'}
                     </PrimaryButton>
                 </div>
             </form>
 
-            <p className="mt-6 text-sm text-center text-gray-600">
+            <p className="text-sm text-center text-gray-500 font-semibold">
                 Already have an account?{' '}
                 <Link
                     to="/login"
-                    className="text-primary-600 hover:text-primary-700 font-medium"
+                    className="text-primary-600 hover:text-primary-500 transition-colors"
                 >
                     Sign in
                 </Link>

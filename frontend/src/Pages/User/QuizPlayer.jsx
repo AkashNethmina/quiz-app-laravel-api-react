@@ -1,14 +1,14 @@
 import { useState, useEffect } from 'react';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import axios from '../../lib/axios';
 import QuizTimer from '../../Components/quiz/QuizTimer';
 import PrimaryButton from '../../Components/PrimaryButton';
 import SecondaryButton from '../../Components/SecondaryButton';
+import { ChevronLeft, ChevronRight, CheckCircle2, AlertCircle, HelpCircle } from 'lucide-react';
 
 export default function QuizPlayer() {
     const location = useLocation();
     const navigate = useNavigate();
-    const { id: quizId } = useParams();
 
     const [attemptId, setAttemptId] = useState(null);
     const [questions, setQuestions] = useState([]);
@@ -69,7 +69,10 @@ export default function QuizPlayer() {
         if (!isAutoSubmit) {
             const answeredCount = Object.keys(answers).length;
             if (answeredCount < questions.length) {
-                const confirm = window.confirm("Submit quiz? Unanswered questions score 0.");
+                const confirm = window.confirm(`You've answered ${answeredCount}/${questions.length} questions. Submit quiz now?`);
+                if (!confirm) return;
+            } else {
+                const confirm = window.confirm("Are you ready to submit your answers?");
                 if (!confirm) return;
             }
         }
@@ -91,7 +94,7 @@ export default function QuizPlayer() {
     if (!questions.length) {
         return (
             <div className="flex items-center justify-center min-h-[50vh]">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
+                <div className="animate-spin rounded-full h-8 w-8 border-2 border-primary-600 border-t-transparent"></div>
             </div>
         );
     }
@@ -100,61 +103,78 @@ export default function QuizPlayer() {
     const isAnswered = (qIndex) => answers[questions[qIndex].id] !== undefined;
 
     return (
-        <div className="max-w-3xl mx-auto p-4 sm:p-6 lg:p-8">
+        <div className="max-w-3xl mx-auto space-y-6 animate-fade-in">
             {/* Header / Timer */}
-            <div className="flex items-center justify-between mb-6">
-                <h1 className="text-xl font-bold text-gray-900">Quiz Player</h1>
+            <div className="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm flex items-center justify-between">
+                <div className="space-y-0.5">
+                    <h1 className="text-base font-bold text-gray-900">Quiz In Progress</h1>
+                    <p className="text-xs text-gray-400 font-semibold">Answer all questions to finalize your attempt</p>
+                </div>
                 {expiresAt && (
                     <QuizTimer expiresAt={expiresAt} onExpire={() => handleSubmit(true)} />
                 )}
             </div>
 
-            {/* Answered Dots */}
-            <div className="flex flex-wrap gap-2 mb-6">
-                {questions.map((q, idx) => (
-                    <button
-                        key={q.id}
-                        onClick={() => setCurrentIndex(idx)}
-                        disabled={isSubmitting}
-                        className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium transition ${
-                            currentIndex === idx
-                                ? 'ring-2 ring-primary-600 ring-offset-2'
-                                : ''
-                        } ${
-                            isAnswered(idx)
-                                ? 'bg-primary-600 text-white'
-                                : 'bg-gray-200 text-gray-600'
-                        }`}
-                    >
-                        {idx + 1}
-                    </button>
-                ))}
-            </div>
+            {/* Answered Dots Selector */}
+            <div className="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm space-y-4">
+                <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest block">Question Status Map</span>
+                <div className="flex flex-wrap gap-2">
+                    {questions.map((q, idx) => {
+                        const active = currentIndex === idx;
+                        const answered = isAnswered(idx);
+                        return (
+                            <button
+                                key={q.id}
+                                onClick={() => setCurrentIndex(idx)}
+                                disabled={isSubmitting}
+                                className={`w-9 h-9 rounded-xl flex items-center justify-center text-sm font-semibold transition-all ${
+                                    active
+                                        ? 'ring-2 ring-primary-600 ring-offset-2 bg-primary-600 text-white shadow-sm'
+                                        : answered
+                                            ? 'bg-primary-100 text-primary-800 border border-primary-200'
+                                            : 'bg-slate-50 border border-slate-200/60 text-gray-500 hover:bg-slate-100'
+                                }`}
+                            >
+                                {idx + 1}
+                            </button>
+                        );
+                    })}
+                </div>
 
-            {/* Progress Bar */}
-            <div className="w-full bg-gray-200 rounded-full h-2 mb-6">
-                <div
-                    className="bg-primary-600 h-2 rounded-full transition-all duration-300"
-                    style={{ width: `${((currentIndex + 1) / questions.length) * 100}%` }}
-                ></div>
+                {/* Smooth Progress Bar */}
+                <div className="pt-2">
+                    <div className="w-full bg-slate-100 rounded-full h-2">
+                        <div
+                            className="bg-gradient-to-r from-primary-500 to-emerald-500 h-2 rounded-full transition-all duration-300 shadow-sm shadow-primary-500/10"
+                            style={{ width: `${((currentIndex + 1) / questions.length) * 100}%` }}
+                        ></div>
+                    </div>
+                </div>
             </div>
 
             {/* Question Card */}
-            <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 sm:p-8 mb-6 relative">
+            <div className="bg-white rounded-3xl border border-gray-100 p-6 sm:p-8 shadow-sm relative overflow-hidden">
                 {isSubmitting && (
-                    <div className="absolute inset-0 bg-white/50 flex items-center justify-center z-10 rounded-xl">
-                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600"></div>
+                    <div className="absolute inset-0 bg-white/70 backdrop-blur-sm flex flex-col items-center justify-center z-10">
+                        <div className="animate-spin rounded-full h-8 w-8 border-2 border-primary-600 border-t-transparent mb-3"></div>
+                        <p className="text-sm font-bold text-gray-700">Submitting your answers...</p>
                     </div>
                 )}
                 
-                <div className="text-sm font-medium text-gray-500 uppercase tracking-wide mb-2">
-                    Question {currentIndex + 1} of {questions.length}
+                <div className="flex justify-between items-center mb-4">
+                    <span className="text-[10px] font-bold text-primary-600 uppercase tracking-widest">
+                        Question {currentIndex + 1} of {questions.length}
+                    </span>
+                    <span className="text-xs font-semibold px-2 py-0.5 rounded-md bg-slate-50 border border-slate-100 text-gray-500">
+                        {currentQ.type === 'mcq' ? 'Multiple Choice' : 'True/False'}
+                    </span>
                 </div>
-                <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-8">
+
+                <h2 className="text-lg sm:text-xl font-bold text-gray-900 mb-8 leading-snug">
                     {currentQ.question_text}
                 </h2>
 
-                {/* Options */}
+                {/* Options Layout */}
                 {currentQ.type === 'mcq' ? (
                     <div className="space-y-3">
                         {currentQ.options.map(opt => {
@@ -164,19 +184,19 @@ export default function QuizPlayer() {
                                     key={opt.id}
                                     onClick={() => handleAnswerSelect(opt.id)}
                                     disabled={isSubmitting}
-                                    className={`w-full text-left p-4 rounded-xl border-2 transition-all ${
+                                    className={`w-full text-left p-4 rounded-xl border transition-all duration-200 flex items-center justify-between ${
                                         isSelected
-                                            ? 'border-primary-600 bg-primary-50'
-                                            : 'border-gray-100 bg-white hover:border-primary-200 hover:bg-gray-50'
+                                            ? 'border-primary-500 bg-primary-50/50 shadow-sm shadow-primary-500/5'
+                                            : 'border-slate-100 bg-white hover:border-slate-300 hover:bg-slate-50/50'
                                     }`}
                                 >
-                                    <div className="flex items-center">
-                                        <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center mr-3 ${
-                                            isSelected ? 'border-primary-600' : 'border-gray-300'
+                                    <div className="flex items-center gap-3">
+                                        <div className={`w-5 h-5 rounded-full border flex items-center justify-center shrink-0 transition-colors ${
+                                            isSelected ? 'border-primary-600 bg-primary-600 text-white' : 'border-gray-300 bg-white'
                                         }`}>
-                                            {isSelected && <div className="w-2.5 h-2.5 rounded-full bg-primary-600"></div>}
+                                            {isSelected && <div className="w-1.5 h-1.5 rounded-full bg-white"></div>}
                                         </div>
-                                        <span className={`text-base font-medium ${isSelected ? 'text-primary-900' : 'text-gray-700'}`}>
+                                        <span className={`text-sm font-semibold leading-relaxed ${isSelected ? 'text-primary-950' : 'text-gray-700'}`}>
                                             {opt.option_text}
                                         </span>
                                     </div>
@@ -193,13 +213,13 @@ export default function QuizPlayer() {
                                     key={opt.id}
                                     onClick={() => handleAnswerSelect(opt.id)}
                                     disabled={isSubmitting}
-                                    className={`p-6 rounded-xl border-2 text-lg font-bold transition-all flex flex-col items-center justify-center gap-2 ${
+                                    className={`p-6 rounded-2xl border-2 text-base font-bold transition-all duration-200 flex flex-col items-center justify-center gap-2 ${
                                         isSelected
-                                            ? 'border-primary-600 bg-primary-600 text-white'
-                                            : 'border-gray-200 bg-white text-gray-700 hover:bg-gray-50 hover:border-primary-200'
+                                            ? 'border-primary-500 bg-primary-50 text-primary-700 shadow-sm shadow-primary-500/5'
+                                            : 'border-slate-100 bg-white text-gray-700 hover:bg-slate-50 hover:border-slate-300'
                                     }`}
                                 >
-                                    {opt.option_text}
+                                    <span className="text-sm font-bold uppercase tracking-wider">{opt.option_text}</span>
                                 </button>
                             );
                         })}
@@ -207,22 +227,24 @@ export default function QuizPlayer() {
                 )}
             </div>
 
-            {/* Navigation */}
+            {/* Navigation Controls */}
             <div className="flex items-center justify-between">
                 <SecondaryButton
                     onClick={handlePrev}
                     disabled={currentIndex === 0 || isSubmitting}
-                    className="px-6 py-3"
+                    className="px-5 py-2.5 flex items-center gap-1.5"
                 >
+                    <ChevronLeft className="w-4.5 h-4.5" />
                     Previous
                 </SecondaryButton>
                 
                 <PrimaryButton
                     onClick={handleNext}
                     disabled={isSubmitting}
-                    className="px-6 py-3"
+                    className="px-5 py-2.5 flex items-center gap-1.5"
                 >
                     {currentIndex === questions.length - 1 ? 'Submit Quiz' : 'Next'}
+                    {currentIndex !== questions.length - 1 && <ChevronRight className="w-4.5 h-4.5" />}
                 </PrimaryButton>
             </div>
         </div>

@@ -1,7 +1,12 @@
 import { useState, useEffect, useRef } from 'react';
 
 export default function QuizTimer({ expiresAt, onExpire }) {
-    const [remaining, setRemaining] = useState(0);
+    const [remaining, setRemaining] = useState(() => {
+        if (!expiresAt) return 0;
+        const target = new Date(expiresAt).getTime();
+        const diff = Math.floor((target - Date.now()) / 1000);
+        return diff > 0 ? diff : 0;
+    });
 
     const onExpireRef = useRef(onExpire);
 
@@ -20,16 +25,14 @@ export default function QuizTimer({ expiresAt, onExpire }) {
             return diff > 0 ? diff : 0;
         };
 
-        let diff = calculateRemaining();
-        setRemaining(diff);
-
-        if (diff <= 0) {
+        const initialDiff = calculateRemaining();
+        if (initialDiff <= 0) {
             onExpireRef.current();
             return;
         }
 
         const intervalId = setInterval(() => {
-            diff = calculateRemaining();
+            const diff = calculateRemaining();
             setRemaining(diff);
 
             if (diff <= 0) {
@@ -51,7 +54,7 @@ export default function QuizTimer({ expiresAt, onExpire }) {
     if (remaining <= 10) {
         colorClass = 'text-red-600 bg-red-50';
     } else if (remaining <= 30) {
-        colorClass = 'text-amber-600 bg-amber-50';
+        colorClass = 'text-yellow-600 bg-yellow-50';
     }
 
     return (
