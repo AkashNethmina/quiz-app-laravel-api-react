@@ -4,7 +4,6 @@ import axios from '../../lib/axios';
 import QuestionForm from '../../Components/admin/QuestionForm';
 import ConfirmDialog from '../../Components/ui/ConfirmDialog';
 import EmptyState from '../../Components/ui/EmptyState';
-import { ArrowLeft, Plus, ChevronUp, ChevronDown, HelpCircle, Clock, Trash2, CheckCircle2 } from 'lucide-react';
 
 export default function AdminQuestions() {
     const { id: quizId } = useParams();
@@ -23,6 +22,7 @@ export default function AdminQuestions() {
     const fetchQuizAndQuestions = async () => {
         setLoading(true);
         try {
+            // Assumes this endpoint loads related questions inherently based on standard Laravel resource design.
             const res = await axios.get(`/api/admin/quizzes/${quizId}`);
             const data = res.data.data ?? res.data;
             setQuiz(data);
@@ -71,33 +71,40 @@ export default function AdminQuestions() {
             [newQuestions[index + 1], newQuestions[index]] = [newQuestions[index], newQuestions[index + 1]];
         }
         setQuestions(newQuestions);
+        // Note: As per request, "update order locally, no API call needed" unless specified. 
+        // In a real app we'd dispatch a patch.
     };
 
     if (loading) {
         return (
             <div className="flex items-center justify-center min-h-[50vh]">
-                <div className="animate-spin rounded-full h-8 w-8 border-2 border-primary-600 border-t-transparent"></div>
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
             </div>
         );
     }
 
     return (
-        <div className="max-w-4xl mx-auto space-y-6 animate-fade-in">
-            {/* Header */}
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div className="max-w-5xl mx-auto p-6">
+            <div className="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
-                    <Link to="/admin/quizzes" className="text-xs font-semibold text-primary-600 hover:text-primary-500 mb-3 inline-flex items-center gap-1">
-                        <ArrowLeft className="w-3.5 h-3.5" />
+                    <Link to="/admin/quizzes" className="text-sm font-medium text-primary-600 hover:text-primary-800 mb-2 inline-flex items-center">
+                        <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                        </svg>
                         Back to Quizzes
                     </Link>
                     <h1 className="text-2xl font-bold text-gray-900">{quiz?.title}</h1>
-                    <div className="flex items-center gap-3.5 mt-2 text-xs font-semibold text-gray-500">
-                        <span className="flex items-center gap-1.5 bg-slate-50 border border-slate-100 px-2 py-1 rounded-md">
-                            <HelpCircle className="w-3.5 h-3.5 text-gray-400" />
+                    <div className="flex items-center gap-4 mt-2 text-sm text-gray-600">
+                        <span className="flex items-center">
+                            <svg className="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2"></path>
+                            </svg>
                             {questions.length} Questions
                         </span>
-                        <span className="flex items-center gap-1.5 bg-slate-50 border border-slate-100 px-2 py-1 rounded-md">
-                            <Clock className="w-3.5 h-3.5 text-gray-400" />
+                        <span className="flex items-center">
+                            <svg className="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
                             {quiz?.time_limit}s Time Limit
                         </span>
                     </div>
@@ -105,9 +112,11 @@ export default function AdminQuestions() {
                 {!showAddForm && (
                     <button
                         onClick={() => { setShowAddForm(true); setEditingQuestionId(null); }}
-                        className="inline-flex items-center justify-center gap-1.5 bg-primary-600 hover:bg-primary-500 active:scale-[0.98] text-white px-5 py-2.5 rounded-lg text-xs font-semibold shadow-sm transition-all duration-200 shrink-0"
+                        className="bg-primary-600 hover:bg-primary-700 text-white px-5 py-2.5 rounded-lg text-sm font-medium transition shadow-sm flex items-center justify-center shrink-0"
                     >
-                        <Plus className="w-4 h-4" />
+                        <svg className="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                        </svg>
                         Add Question
                     </button>
                 )}
@@ -141,62 +150,56 @@ export default function AdminQuestions() {
                                     onCancel={() => setEditingQuestionId(null)}
                                 />
                             ) : (
-                                <div className="bg-white rounded-3xl border border-gray-100 p-5 sm:p-6 flex gap-4 transition hover:shadow-sm hover:border-primary-100/60">
-                                    {/* Sort Controls */}
-                                    <div className="flex flex-col items-center gap-0.5 text-gray-400 select-none shrink-0 justify-center">
+                                <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-5 flex gap-4 transition hover:border-primary-100">
+                                    <div className="flex flex-col items-center gap-1 text-gray-400">
                                         <button 
                                             onClick={() => moveQuestion(index, 'up')}
                                             disabled={index === 0}
                                             className="p-1 hover:text-primary-600 disabled:opacity-30 transition"
-                                            title="Move Up"
                                         >
-                                            <ChevronUp className="w-5 h-5" />
+                                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 15l7-7 7 7"></path></svg>
                                         </button>
-                                        <span className="text-xs font-bold text-gray-900 bg-slate-50 border border-slate-100 w-6 h-6 rounded-full flex items-center justify-center">{index + 1}</span>
+                                        <span className="text-sm font-medium">{index + 1}</span>
                                         <button 
                                             onClick={() => moveQuestion(index, 'down')}
                                             disabled={index === questions.length - 1}
                                             className="p-1 hover:text-primary-600 disabled:opacity-30 transition"
-                                            title="Move Down"
                                         >
-                                            <ChevronDown className="w-5 h-5" />
+                                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
                                         </button>
                                     </div>
                                     
-                                    {/* Main Question Body */}
-                                    <div className="flex-1 space-y-4">
-                                        <div className="flex justify-between items-start gap-4">
+                                    <div className="flex-1">
+                                        <div className="flex justify-between items-start mb-3">
                                             <div>
-                                                <span className={`inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider mb-2 ${q.type === 'mcq' ? 'bg-primary-50 text-primary-700' : 'bg-purple-50 text-purple-700'}`}>
+                                                <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium mb-2 ${q.type === 'mcq' ? 'bg-primary-50 text-primary-700' : 'bg-purple-50 text-purple-700'}`}>
                                                     {q.type === 'mcq' ? 'Multiple Choice' : 'True/False'}
                                                 </span>
-                                                <h4 className="font-semibold text-gray-900 leading-snug">{q.question_text}</h4>
+                                                <p className="font-semibold text-gray-900">{q.question_text}</p>
                                             </div>
                                             <div className="flex gap-2 shrink-0">
                                                 <button
                                                     onClick={() => { setEditingQuestionId(q.id); setShowAddForm(false); }}
-                                                    className="px-3 py-1.5 text-xs font-bold text-primary-700 bg-primary-50 hover:bg-primary-100 rounded-lg transition"
+                                                    className="px-3 py-1.5 text-xs font-medium text-primary-600 bg-primary-50 hover:bg-primary-100 rounded-lg transition"
                                                 >
                                                     Edit
                                                 </button>
                                                 <button
                                                     onClick={() => confirmDelete(q.id)}
-                                                    className="p-1.5 text-rose-600 hover:text-rose-800 hover:bg-rose-50 rounded-lg transition"
-                                                    title="Delete Question"
+                                                    className="px-3 py-1.5 text-xs font-medium text-red-600 bg-red-50 hover:bg-red-100 rounded-lg transition"
                                                 >
-                                                    <Trash2 className="w-4.5 h-4.5" />
+                                                    Delete
                                                 </button>
                                             </div>
                                         </div>
 
-                                        {/* Question Options */}
-                                        <div className="space-y-2 pl-3 border-l border-gray-100 text-xs">
+                                        <div className="space-y-2 mt-4 pl-2 border-l-2 border-gray-100">
                                             {q.options && q.options.map(opt => (
-                                                <div key={opt.id} className="flex items-center gap-2">
-                                                    <div className={`w-4 h-4 rounded-full border flex items-center justify-center shrink-0 ${opt.is_correct ? 'border-emerald-500 bg-emerald-500 text-white' : 'border-gray-200'}`}>
-                                                        {opt.is_correct && <CheckCircle2 className="w-3.5 h-3.5 fill-current" />}
-                                                    </div>
-                                                    <span className={`font-semibold ${opt.is_correct ? 'text-emerald-700 font-bold' : 'text-gray-500'}`}>
+                                                <div key={opt.id} className="flex items-center text-sm">
+                                                    <span className={`w-4 h-4 mr-2 rounded-full border flex items-center justify-center shrink-0 ${opt.is_correct ? 'border-green-500 bg-green-500' : 'border-gray-300'}`}>
+                                                        {opt.is_correct && <svg className="w-2.5 h-2.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7"></path></svg>}
+                                                    </span>
+                                                    <span className={opt.is_correct ? 'font-medium text-green-700 block mt-0.5' : 'text-gray-600 block mt-0.5'}>
                                                         {opt.option_text}
                                                     </span>
                                                 </div>
