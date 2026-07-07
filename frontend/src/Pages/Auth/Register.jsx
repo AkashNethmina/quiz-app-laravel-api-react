@@ -93,7 +93,7 @@ export default function RegisterPage() {
                 form.password_confirmation
             );
 
-            navigate('/verify-email');
+            navigate('/dashboard');
         } catch (err) {
             if (err.response?.status === 422) {
                 setErrors(err.response.data.errors ?? {});

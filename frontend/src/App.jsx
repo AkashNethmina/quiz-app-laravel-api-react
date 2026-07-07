@@ -1,7 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import RequireAuth     from './Components/guards/RequireAuth';
-import RequireVerified from './Components/guards/RequireVerified';
 import RequireAdmin    from './Components/guards/RequireAdmin';
 
 // Layouts
@@ -14,7 +13,6 @@ import LoginPage      from './Pages/Auth/Login';
 import RegisterPage   from './Pages/Auth/Register';
 import ForgotPassword from './Pages/Auth/ForgotPassword';
 import ResetPassword  from './Pages/Auth/ResetPassword';
-import VerifyEmail    from './Pages/Auth/VerifyEmail';
 
 // Public pages
 import Home from './Pages/Home';
@@ -51,36 +49,27 @@ export default function App() {
                     {/* ── Protected routes (auth required) ──────────── */}
                     <Route element={<RequireAuth />}>
 
-                        {/* Verify-email: auth required but NOT verified required */}
-                        <Route element={<AuthLayout />}>
-                            <Route path="/verify-email" element={<VerifyEmail />} />
+                        <Route element={<AppLayout />}>
+                            <Route path="/dashboard"              element={<UserDashboard />} />
+                            <Route path="/quizzes"                element={<QuizList />} />
+                            <Route path="/quizzes/:id/play"       element={<QuizPlayer />} />
+                            <Route path="/attempts/:id/result"    element={<ResultPage />} />
+                            <Route path="/leaderboard"            element={<LeaderboardPage />} />
+                            <Route path="/profile"                element={<ProfilePage />} />
                         </Route>
 
-                        {/* Everything below requires a verified email */}
-                        <Route element={<RequireVerified />}>
-
-                            <Route element={<AppLayout />}>
-                                <Route path="/dashboard"              element={<UserDashboard />} />
-                                <Route path="/quizzes"                element={<QuizList />} />
-                                <Route path="/quizzes/:id/play"       element={<QuizPlayer />} />
-                                <Route path="/attempts/:id/result"    element={<ResultPage />} />
-                                <Route path="/leaderboard"            element={<LeaderboardPage />} />
-                                <Route path="/profile"                element={<ProfilePage />} />
+                        {/* ── Admin routes (admin role required) ──── */}
+                        <Route element={<RequireAdmin />}>
+                            <Route element={<AdminLayout />}>
+                                <Route path="/admin"                        element={<Navigate to="/admin/dashboard" replace />} />
+                                <Route path="/admin/dashboard"              element={<AdminDashboard />} />
+                                <Route path="/admin/quizzes"                element={<AdminQuizList />} />
+                                <Route path="/admin/quizzes/create"         element={<AdminQuizForm />} />
+                                <Route path="/admin/quizzes/:id/edit"       element={<AdminQuizForm />} />
+                                <Route path="/admin/quizzes/:id/questions"  element={<AdminQuestions />} />
                             </Route>
-
-                            {/* ── Admin routes (admin role required) ──── */}
-                            <Route element={<RequireAdmin />}>
-                                <Route element={<AdminLayout />}>
-                                    <Route path="/admin"                        element={<Navigate to="/admin/dashboard" replace />} />
-                                    <Route path="/admin/dashboard"              element={<AdminDashboard />} />
-                                    <Route path="/admin/quizzes"                element={<AdminQuizList />} />
-                                    <Route path="/admin/quizzes/create"         element={<AdminQuizForm />} />
-                                    <Route path="/admin/quizzes/:id/edit"       element={<AdminQuizForm />} />
-                                    <Route path="/admin/quizzes/:id/questions"  element={<AdminQuestions />} />
-                                </Route>
-                            </Route>
-
                         </Route>
+
                     </Route>
 
                     {/* ── Default redirect ───────────────────────────── */}

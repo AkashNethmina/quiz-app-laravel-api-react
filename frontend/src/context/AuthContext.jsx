@@ -66,8 +66,8 @@ export function AuthProvider({ children }) {
         user,
         isAuthenticated,
         isLoading,
-        // true only when the user is logged in AND has verified their email
-        emailVerified: !!user?.email_verified_at,
+        // true only when the user is logged in
+        emailVerified: !!user,
         role: user?.role ?? null,
         login,
         register,
