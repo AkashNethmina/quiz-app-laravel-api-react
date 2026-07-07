@@ -14,7 +14,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 // ── Auth-protected routes (email must be verified) ────────────────────────────
-Route::middleware(['auth:sanctum', 'verified'])->group(function () {
+Route::middleware(['auth:sanctum'])->group(function () {
 
     // Public quiz & attempt routes
     Route::get('quizzes', [App\Http\Controllers\QuizController::class, 'index']);
@@ -29,7 +29,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 });
 
 // ── Admin-only routes ─────────────────────────────────────────────────────────
-Route::prefix('admin')->middleware(['auth:sanctum', 'admin', 'verified'])->group(function () {
+Route::prefix('admin')->middleware(['auth:sanctum', 'admin'])->group(function () {
 
     // Quiz CRUD + publish toggle
     Route::get('quizzes',                [Admin\QuizController::class, 'index']);
