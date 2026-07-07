@@ -14,6 +14,9 @@ import RegisterPage   from './Pages/Auth/Register';
 import ForgotPassword from './Pages/Auth/ForgotPassword';
 import ResetPassword  from './Pages/Auth/ResetPassword';
 
+// Public pages
+import Home from './Pages/Home';
+
 // User pages
 import UserDashboard  from './Pages/User/Dashboard';
 import QuizList       from './Pages/User/QuizList';
@@ -34,6 +37,8 @@ export default function App() {
             <BrowserRouter>
                 <Routes>
                     {/* ── Public routes ─────────────────────────────── */}
+                    <Route path="/" element={<Home />} />
+
                     <Route element={<AuthLayout />}>
                         <Route path="/login"           element={<LoginPage />} />
                         <Route path="/register"        element={<RegisterPage />} />
@@ -68,7 +73,6 @@ export default function App() {
                     </Route>
 
                     {/* ── Default redirect ───────────────────────────── */}
-                    <Route path="/"  element={<Navigate to="/dashboard" replace />} />
                     <Route path="*"  element={<Navigate to="/dashboard" replace />} />
                 </Routes>
             </BrowserRouter>
